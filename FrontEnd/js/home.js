@@ -21,13 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addNewTask = () => {
         const taskText = newTaskInput.value.trim();
         const taskType = document.getElementById('task-type').value;
-        console.log('Task Type:', taskType, 'Element:', document.getElementById('task-type'));
         
         if (taskText) {
             createTaskElement(taskText, taskType);
             newTaskInput.value = '';
             saveTasks();
-            updateProgress();
+            updateProgress(); // Update progress after adding
         }
     };
 
@@ -40,8 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function createTaskElement(taskText, category, isChecked = false) {
-    // Add error handling for category
-    console.log('Creating task:', taskText, 'Category:', category);
     const validCategories = ['daily', 'weekly', 'monthly'];
     if (!validCategories.includes(category)) {
         console.error('Invalid category:', category);
@@ -49,13 +46,8 @@ function createTaskElement(taskText, category, isChecked = false) {
     }
 
     const taskList = document.querySelector(`.task-list[data-category="${category}"]`);
-    
-    if (!taskList) {
-        console.error('Task list not found for category:', category);
-        return;
-    }
+    if (!taskList) return;
 
-    // Rest of the function remains the same
     const newTask = document.createElement('label');
     newTask.className = 'task-item';
     newTask.innerHTML = `
@@ -67,8 +59,8 @@ function createTaskElement(taskText, category, isChecked = false) {
         newTask.querySelector('.task').addEventListener('change', function() {
             if (this.checked) {
                 moveToDone(this.parentElement);
-                updateProgress();
                 saveTasks();
+                updateProgress(); // Update after moving to Done
             }
         });
     }
@@ -87,7 +79,7 @@ function moveToDone(taskElement) {
 function saveTasks() {
     const tasks = [];
     
-    ['daily', 'weekly', 'monthly'].forEach(category => {
+    ['daily', 'weekly', 'monthly', 'done'].forEach(category => {
         const items = document.querySelectorAll(`.task-list[data-category="${category}"] .task-item`);
         items.forEach(item => {
             tasks.push({
@@ -98,15 +90,6 @@ function saveTasks() {
         });
     });
 
-    const doneTasks = document.querySelectorAll('.task-list[data-category="done"] .task-item');
-    doneTasks.forEach(item => {
-        tasks.push({
-            text: item.querySelector('span').textContent,
-            category: 'done',
-            checked: true
-        });
-    });
-
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
@@ -114,7 +97,6 @@ function loadSavedTasks() {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     savedTasks.forEach(task => {
         if (task.category === 'done') {
-            // Directly add to done list without using createTaskElement
             const doneList = document.querySelector('.task-list[data-category="done"]');
             const doneTask = document.createElement('label');
             doneTask.className = 'task-item';
@@ -125,16 +107,14 @@ function loadSavedTasks() {
             doneList.appendChild(doneTask);
         } else {
             createTaskElement(task.text, task.category, task.checked);
-            if (task.checked) {
-                moveToDone(document.querySelector(`.task-list[data-category="${task.category}"] .task-item:last-child`));
-            }
         }
     });
 }
 
+// Fixed progress calculation
 function updateProgress() {
-    const activeTasks = document.querySelectorAll('.task-list[data-category]:not([data-category="done"]) .task:checked');
-    const totalXP = activeTasks.length * 5;
+    const doneTasks = document.querySelectorAll('.task-list[data-category="done"] .task-item');
+    const totalXP = doneTasks.length * 5;
     const level = Math.floor(totalXP / 20) + 1;
     const progress = ((totalXP % 20) / 20) * 100;
 
