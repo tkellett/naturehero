@@ -43,7 +43,7 @@ var onload = function () {
     auth.signOut();
   };
 
-  const googleButton = document.getElementById("googleSignin");
+  const googleButton = document.getElementById("google-sign-in-button");
   googleButton.addEventListener("click", () => {
     google_login();
   });

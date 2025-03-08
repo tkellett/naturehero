@@ -8,7 +8,10 @@ app = Flask(__name__)
 datastore_client = datastore.Client()
 
 def store_time(email, dt):
-    entity = datastore.Entity(key=datastore_client.key("User", email, "visit"))
+    # entity = get_or_create_entity(email)
+    #entity = datastore.Entity(key=datastore_client.key("User", email, "visit"))
+    entity = datastore.Entity(key=datastore_client.key("User", email))
+    # entity.clear()
     entity.update({"timestamp": dt})
 
     datastore_client.put(entity)
@@ -21,7 +24,7 @@ def fetch_times(email, limit):
 
     times = query.fetch(limit=limit)
 
-    return times
+    return [datastore_client.get(ancestor)]#times
 
 
 
