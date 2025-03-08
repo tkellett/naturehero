@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="screen active">
-        <div class="level-display">Level: <span id="level">1</span></div>
-        <img src="https://via.placeholder.com/200" class="profile-pic" id="profile-pic">
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
+<div class="screen active">
+<h1>Social Feed</h1>
+<div class="social-content">
+    <div class="container">
+        <header>
+            <h1>Social Feed</h1>
+        </header>
         
-        <div class="add-task">
-            <input type="text" id="new-task" placeholder="Add new task">
-            <select id="task-type">
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-            </select>
-            <button onclick="addNewTask()">Add</button>
-        </div>
-
-        <div class="task-sections">
-            <div class="task-column">
-                <h3>Daily Tasks</h3>
-                <div class="task-list" data-category="daily"></div>
+        <main>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search">
             </div>
-            <div class="task-column">
-                <h3>Weekly Tasks</h3>
-                <div class="task-list" data-category="weekly"></div>
+            
+            <div class="profile-photo">
+                <a href="#">+ add your profile photo</a>
             </div>
-            <div class="task-column">
-                <h3>Monthly Tasks</h3>
-                <div class="task-list" data-category="monthly"></div>
+            
+            <div class="contact-list">
+                <div class="contact-card">
+                    <div class="contact-name">Gemma</div>
+                    <div class="level-badge level-bronze">Level<br>Bronze</div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-name">Adam</div>
+                    <div class="level-badge level-gold">Level<br>Gold</div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-name">Anna</div>
+                    <div class="level-badge level-silver">Level<br>Silver</div>
+                </div>
             </div>
-            <div class="task-column">
-                <h3>Done</h3>
-                <div class="task-list" data-category="done"></div>
-            </div>
-        </div>
+        </main>
+        
+        <nav class="navigation">
+            <a href="profile.html" class="nav-button">Profile</a>
+            <a href="home.html" class="nav-button">Home</a>
+            <a href="social.html" class="nav-button active">Social</a>
+        </nav>
     </div>
-
-    <div class="nav-tab">
-        <a href="home.html" class="nav-button active">Home</a>
-        <a href="social.html" class="nav-button">Social</a>
-        <a href="profile.html" class="nav-button">Profile</a>
-    </div>
-
-    <script src="js/navigation.js"></script>
-    <script src="js/home.js"></script>
 </body>
 </html>
