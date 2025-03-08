@@ -1,25 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="screen active">
-        <h1>Social Feed</h1>
+        <h1>Social </h1>
         <div class="social-content">
-            <!-- Social content would go here -->
+            <div class="container">
+                <header>
+                    <h1>Social</h1>
+                </header>
+                
+                <main>
+                    <div class="search-container">
+                        <input type="text" class="search-box" placeholder="Search">
+                    </div>
+                    
+                    <div class="profile-photo">
+                        <a href="#">+ add your profile</a>
+                    </div>
+                    
+                    <div class="contact-list">
+                        <div class="contact-card">
+                            <div class="contact-info">
+                                <div class="contact-name">Gemma</div>
+                                <div class="contact-achievement">4 full days volunteering over at least 3 months</div>
+                            </div>
+                            <div class="level-badge level-bronze">Level<br>Bronze</div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-info">
+                                <div class="contact-name">Adam</div>
+                                <div class="contact-achievement">10 full days volunteering over at least 12 months</div>
+                            </div>
+                            <div class="level-badge level-gold">Level<br>Gold</div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-info">
+                                <div class="contact-name">Anna</div>
+                                <div class="contact-achievement">6 full days volunteering over at least 6 months</div>
+                            </div>
+                            <div class="level-badge level-silver">Level<br>Silver</div>
+                        </div>
+                    </div>
+                </main>
+                
+                <nav class="navigation">
+                    <a href="profile.html" class="nav-button">Profile</a>
+                    <a href="home.html" class="nav-button">Home</a>
+                    <a href="social.html" class="nav-button active">Social</a>
+                </nav>
+            </div>
         </div>
     </div>
-
-    <div class="nav-tab">
-        <a href="home.html" class="nav-button">Home</a>
-        <a href="social.html" class="nav-button active">Social</a>
-        <a href="profile.html" class="nav-button">Profile</a>
-    </div>
-
-    <script src="js/navigation.js"></script>
 </body>
 </html>
