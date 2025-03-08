@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="screen active">
+        <div class="level-display">Level: <span id="level">1</span></div>
+        <img src="https://via.placeholder.com/200" class="profile-pic" id="profile-pic">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="add-task">
+            <input type="text" id="new-task" placeholder="Add new task">
+            <select id="task-type">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+            <button onclick="addNewTask()">Add</button>
+        </div>
+
+        <div class="task-sections">
+            <div class="task-column">
+                <h3>Daily Tasks</h3>
+                <div class="task-list" data-category="daily"></div>
+            </div>
+            <div class="task-column">
+                <h3>Weekly Tasks</h3>
+                <div class="task-list" data-category="weekly"></div>
+            </div>
+            <div class="task-column">
+                <h3>Monthly Tasks</h3>
+                <div class="task-list" data-category="monthly"></div>
+            </div>
+            <div class="task-column">
+                <h3>Done</h3>
+                <div class="task-list" data-category="done"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-tab">
+        <a href="home.html" class="nav-button active">Home</a>
+        <a href="social.html" class="nav-button">Social</a>
+        <a href="profile.html" class="nav-button">Profile</a>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
