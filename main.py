@@ -5,6 +5,8 @@ from google.cloud import datastore
 import google.oauth2.id_token
 app = Flask(__name__)
 
+from database_management import *
+
 datastore_client = datastore.Client()
 
 def store_time(email, dt):
@@ -23,81 +25,6 @@ def fetch_times(email, limit):
 
     return times
 
-
-
-
-def create_user(email, name, DoB, tag):
-    key = datastore_client.key("User", email)  # "User" is the kind, email is the unique key
-    
-    # Create a new entity
-    entity = datastore.Entity(key=key)
-
-    # Set entity properties
-    entity.update({
-        "name": name,
-        "dateOfBirth": age,
-        "XP":0
-
-    })
-
-    # Save entity to Datastore
-    datastore_client.put(entity)
-    print(f"User {name} added successfully!")
-
-# Example usage
-create_user("alice@example.com", "Alice", 25)  
-
-
-
-
-
-
-def create_task(email, task_name):
-    user_key = datastore_client.key("User", email)  
-
-    task_key = datastore_client.key("User", email, "Task")  
-
-    # Create the Task entity
-    task = datastore.Entity(key=task_key)
-
-    # Set properties for the Task
-    task.update({
-        "task_name": task_name,
-
-        "status": "To do"
-    })
-
-    # Save the entity
-    datastore_client.put(task)
-    print(f"Task '{task_name}' added for user {email}.")
-
-
-
-def create_personal_task(email, task_name):
-    user_key = datastore_client.key("User", email)  
-    personal_task_key = datastore_client.key("User", email, "Task")  
-
-    # Create the Task entity
-    personal_task = datastore.Entity(key=personal_task_keytask_key)
-
-    # Set properties for the Task
-    personal_task.update({
-        "task_name": task_name,
-        "status": "To do"
-    })
-
-    # Save the entity
-    datastore_client.put(personal_task)
-    print(f"Task '{task_name}' added for user {email}.")
-
-
-
-
-
-
-
-
-
 firebase_request_adapter = requests.Request()
 @app.route("/")
 def root():
@@ -106,6 +33,7 @@ def root():
     error_message = None
     claims = None
     times = None
+    #tasks = None
 
     if id_token:
         try:
@@ -119,7 +47,10 @@ def root():
             )
 
             store_time(claims["email"], datetime.datetime.now(tz=datetime.timezone.utc))
+
+            create_task(claims["email"], "test task 123")
             times = fetch_times(claims["email"], 10)
+            tasks = fetch_tasks(claims["email"], 10)
 
         except ValueError as exc:
             # This will be raised if the token is expired or any other
@@ -127,7 +58,7 @@ def root():
             error_message = str(exc)
 
     return render_template(
-        "index.html", user_data=claims, error_message=error_message, times=times
+        "index.html", user_data=claims, error_message=error_message, times=times, tasks=tasks
     )
 
 
@@ -140,4 +71,4 @@ if __name__ == "__main__":
     # the "static" directory. See:
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="127.0.0.1", port=8000, debug=True)
