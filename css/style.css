@@ -43,15 +43,14 @@ body {
 
 /* Navigation */
 .navigation {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     background: #f0f0f0;
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure it stays on top of other content */
 }
 
 .nav-button {
@@ -59,8 +58,6 @@ body {
     text-decoration: none;
     color: #333;
     transition: color 0.3s;
-    font-size: 14px;
-    font-weight: 500;
 }
 
 .nav-button.active {
@@ -323,14 +320,12 @@ h1 {
 /* Responsive Design */
 @media (min-width: 768px) {
     .contact-list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        grid-template-columns: 1fr;
     }
-}
-
-@media (min-width: 1024px) {
-    .contact-list {
-        grid-template-columns: repeat(3, 1fr);
+    .add-task{
+        flex-wrap: wrap;
+    }
+    #new-task{
+        max-width: none;
     }
 }
