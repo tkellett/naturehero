@@ -1,27 +1,67 @@
-/**
- * Copyright 2018, Google LLC
- * Licensed under the Apache License, Version 2.0 (the `License`);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an `AS IS` BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-'use strict';
 
-// [START gae_python38_auth_javascript]
-// [START gae_python3_auth_javascript]
-window.addEventListener('load', function () {
+// Signup function (example)
+async function signup(email, password) {
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("User created:", user);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      alert("Error:", error.message);
+    });
+};
+
+// Login function (example)
+async function login(email, password) {
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("User signed in:", user);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      alert("Error:", error.message);
+    });
+};
+
+async function google_login() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      console.log("Google user:", user);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
+}
+
+var onload = function () {
   document.getElementById('sign-out').onclick = function () {
-    firebase.auth().signOut();
+    auth.signOut();
   };
 
+  const googleButton = document.getElementById("googleSignin");
+  googleButton.addEventListener("click", () => {
+    google_login();
+  });
+
+  // Example usage (in a button click handler, for instance)
+  const signupButton = document.getElementById("signupButton");
+  signupButton.addEventListener("click", () => {
+    const email = document.getElementById("emailInput").value;
+    const password = document.getElementById("passwordInput").value;
+    signup(email, password);
+  });
+
+  const loginButton = document.getElementById("loginButton");
+  loginButton.addEventListener("click", () => {
+    const email = document.getElementById("emailInput").value;
+    const password = document.getElementById("passwordInput").value;
+    login(email, password);
+  });
   // FirebaseUI config.
   var uiConfig = {
     signInSuccessUrl: '/',
@@ -40,11 +80,12 @@ window.addEventListener('load', function () {
     tosUrl: '<your-tos-url>'
   };
 
-  firebase.auth().onAuthStateChanged(function (user) {
+  auth.onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in, so display the "sign out" button and login info.
-      document.getElementById('sign-out').hidden = false;
+      document.getElementById('signout-container').hidden = false;
       document.getElementById('login-info').hidden = false;
+      document.getElementById('login-container').hidden = true;
       console.log(`Signed in as ${user.displayName} (${user.email})`);
       user.getIdToken().then(function (token) {
         // Add the token to the browser's cookies. The server will then be
@@ -57,12 +98,13 @@ window.addEventListener('load', function () {
     } else {
       // User is signed out.
       // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // var ui = new firebaseui.auth.AuthUI(firebase.auth());
       // Show the Firebase login button.
-      ui.start('#firebaseui-auth-container', uiConfig);
+      // ui.start('#firebaseui-auth-container', uiConfig);
       // Update the login state indicators.
-      document.getElementById('sign-out').hidden = true;
+      document.getElementById('signout-container').hidden = true;
       document.getElementById('login-info').hidden = true;
+      document.getElementById('login-container').hidden = false;
       // Clear the token cookie.
       document.cookie = "token=";
     }
@@ -70,6 +112,6 @@ window.addEventListener('load', function () {
     console.log(error);
     alert('Unable to log in: ' + error)
   });
-});
-// [END gae_python3_auth_javascript]
-// [END gae_python38_auth_javascript]
+}
+
+window.addEventListener('load', onload);
