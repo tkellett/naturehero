@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="screen active">
+        <h1>Create Task</h1>
+        <div class="task-content">
+            <!-- Add Task Input -->
+            <div class="add-task">
+                <input type="text" id="new-task" placeholder="Enter a new task">
+                <select id="task-type">
+                    <option value="reoccurring">Reoccurring Task</option>
+                    <option value="one-time">One-Time Task</option>
+                </select>
+                <button id="add-task-btn">Add Task</button>
+            </div>
+
+            <!-- Reoccurring Tasks Section -->
+            <div class="task-section">
+                <h2>Reoccurring Tasks</h2>
+                <div class="task-list" id="reoccurring-tasks">
+                    <div class="task-item">
+                        <span class="task-icon">📅</span>
+                        <span class="task-name">Join meeting</span>
+                    </div>
+                    <!-- Dynamically added reoccurring tasks will appear here -->
+                </div>
+            </div>
+
+            <!-- One-Time Tasks Section -->
+            <div class="task-section">
+                <h2>One-Time Tasks</h2>
+                <div class="task-list" id="one-time-tasks">
+                    <div class="task-item">
+                        <span class="task-icon">🎉</span>
+                        <span class="task-name">Join online event</span>
+                    </div>
+                    <!-- Dynamically added one-time tasks will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Social</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle adding new tasks
+        document.getElementById('add-task-btn').addEventListener('click', function() {
+            const newTaskInput = document.getElementById('new-task');
+            const taskType = document.getElementById('task-type').value;
+            const taskName = newTaskInput.value.trim();
+
+            if (taskName) {
+                const taskList = taskType === 'reoccurring' ? 
+                    document.getElementById('reoccurring-tasks') : 
+                    document.getElementById('one-time-tasks');
+
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+
+                const taskIcon = document.createElement('span');
+                taskIcon.className = 'task-icon';
+                taskIcon.textContent = taskType === 'reoccurring' ? '📅' : '🎉';
+
+                const taskNameSpan = document.createElement('span');
+                taskNameSpan.className = 'task-name';
+                taskNameSpan.textContent = taskName;
+
+                taskItem.appendChild(taskIcon);
+                taskItem.appendChild(taskNameSpan);
+                taskList.appendChild(taskItem);
+
+                newTaskInput.value = ''; // Clear the input field
+            }
+        });
+    </script>
+</body>
+</html>
