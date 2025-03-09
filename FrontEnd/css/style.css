@@ -316,15 +316,14 @@ h1 {
 .level-gold {
     background-color: #fff9e5;
     border-color: #ffd700;
-}
-/* Profile Section */
+}/* Profile Section */
 .profile-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 600px; /* Adjusted to match Social Page width */
     margin: 20px auto;
     text-align: center;
 }
@@ -344,58 +343,32 @@ h1 {
     color: #666;
 }
 
+/* Statistics Section */
 .statistics {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .stat-item {
-    margin-bottom: 10px;
+    text-align: center;
 }
 
 .stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 18px;
     font-weight: bold;
     color: #2c3e50;
 }
 
-.stat-value {
-    color: #333;
-}
-
-.actions {
-    margin-bottom: 20px;
-}
-
-.actions .btn {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.actions .btn:hover {
-    background-color: #45a049;
-}
-
-.navigation {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.navigation .nav-link {
-    text-decoration: none;
-    color: #4CAF50;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.navigation .nav-link:hover {
-    color: #45a049;
-}
 /* Achievements Section */
 .achievements {
     margin-top: 20px;
@@ -418,7 +391,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px;
+    padding: 12px;
     background-color: #f8f8f8;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -431,7 +404,9 @@ h1 {
 .achievement-name {
     font-size: 16px;
     color: #333;
-}/* Profile Photo Upload */
+}
+
+/* Profile Photo Upload */
 .profile-photo-container {
     position: relative;
     display: inline-block;
@@ -465,25 +440,22 @@ h1 {
     opacity: 1;
 }
 
-.profile-header {
+/* Navigation */
+.navigation {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 20px;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-.profile-header .name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-top: 10px;
+.navigation .nav-link {
+    text-decoration: none;
+    color: #4CAF50;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-.profile-header .username {
-    font-size: 18px;
-    color: #666;
-    margin-top: 5px;
+.navigation .nav-link:hover {
+    color: #45a049;
 }
 /* Tasks Page */
 .task-content {
@@ -603,4 +575,5 @@ h1 {
         max-width: none;
     }
 }
+
 
