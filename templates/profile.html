@@ -17,43 +17,44 @@
                     <span class="upload-text">Upload Photo</span>
                 </label>
                 <input type="file" id="profile-photo-upload" accept="image/*" style="display: none;">
-                <div class="name">Name</div>
-                <div class="username">UserName</div>
+                <div class="name">{{user_data['name']}}</div>
+                <div class="username">{{user_data['email']}}</div>
             </div>
             <div class="statistics">
                 <div class="stat-item">
                     <span class="stat-label">Sneak:</span>
-                    <span class="stat-value">20</span>
+                    <span class="stat-value">len(list(datastore_client.query(kind="timestamp")))</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Friends:</span>
-                    <span class="stat-value">20</span>
+                    <span class="stat-value">{{user_data['friends_number']}}</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">20% Done</span>
+                    <span class="stat-label">{{user_data['questions_percent']}}% Done</span>
                 </div>
             </div>
             <div class="achievements">
                 <h2>Achievements</h2>
                 <div class="achievement-list">
-                    <div class="achievement-item">
+                  <!--   <div class="achievement-item">
                         <span class="achievement-icon">🏆</span>
                         <span class="achievement-name">First Task Completed</span>
-                    </div>
+                    </div>-->
                     <div class="achievement-item">
-                        <span class="achievement-icon">🎖️</span>
-                        <span class="achievement-name">10 Friends Added</span>
+                      <!--    <span class="achievement-icon">🎖️</span>-->
+                       <span class="achievement-icon">{{achievement['achievement-icon']}}</span>
+                        <span class="achievement-name">{{achievement['achievement-name']}} </span>
                     </div>
                     <div class="achievement-item">
                         <span class="achievement-icon">🌟</span>
-                        <span class="achievement-name">Level 5 Reached</span>
+                        <span class="achievement-name">Level {{user_data['level']}} Reached</span>
                     </div>
                 </div>
             </div>
-            <div class="nav-tab">
-                <a href="home.html" class="nav-button">Home</a>
-                <a href="social.html" class="nav-button">Social</a>
-                <a href="profile.html" class="nav-button active">Profile</a>
+            <div class="navigation">
+                <a href="#" class="nav-link">Profile</a>
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Social</a>
             </div>
         </div>
     </div>
