@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="screen active">
@@ -22,8 +22,8 @@
             </div>
             <div class="statistics">
                 <div class="stat-item">
-                    <span class="stat-label">Sneak:</span>
-                    <span class="stat-value">len(list(datastore_client.query(kind="timestamp")))</span>
+                    <span class="stat-label">Streak:</span>
+                    <span class="stat-value">{{user_data['streak']}}</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Friends:</span>
@@ -36,19 +36,12 @@
             <div class="achievements">
                 <h2>Achievements</h2>
                 <div class="achievement-list">
-                  <!--   <div class="achievement-item">
-                        <span class="achievement-icon">🏆</span>
-                        <span class="achievement-name">First Task Completed</span>
-                    </div>-->
+                    {% for achievement in achievements %}
                     <div class="achievement-item">
-                      <!--    <span class="achievement-icon">🎖️</span>-->
                        <span class="achievement-icon">{{achievement['achievement-icon']}}</span>
                         <span class="achievement-name">{{achievement['achievement-name']}} </span>
                     </div>
-                    <div class="achievement-item">
-                        <span class="achievement-icon">🌟</span>
-                        <span class="achievement-name">Level {{user_data['level']}} Reached</span>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="navigation">

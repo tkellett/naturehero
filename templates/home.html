@@ -2,15 +2,68 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FirebaseUI Auth Example</title>
-  <!-- Firebase and FirebaseUI CSS -->
-  <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Firebase and FirebaseUI CSS -->
+    <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
+
 <body>
-  <h1>Home</h1>
-    
+    <div class="screen active">
+        <!-- Error Message Container -->
+        <div id="error-message" class="error-message"></div>
+
+        <div class="level-display">Level: <span id="level">1</span></div>
+        <img src="https://via.placeholder.com/200" class="profile-pic" id="profile-pic">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="add-task">
+            <div class="task-input-group">
+                <input type="text" id="new-task" placeholder="Task title*" required>
+                <select id="task-type">
+                    <option value="recurring">Recurring</option>
+                    <option value="one-time">One-time</option>
+                </select>
+            </div>
+
+            <div class="task-meta-inputs">
+                <input type="date" id="start-date" required min="">
+                <input type="date" id="end-date" required min="">
+                <input type="text" id="task-tags" class="task-tags-input" placeholder="Tags (comma separated, max 5)">
+            </div>
+
+            <button type="button" onclick="addNewTask()">Add Task</button>
+        </div>
+
+        <div class="task-sections">
+            <div class="task-column">
+                <h3>Recurring Tasks</h3>
+                <div class="task-list" data-category="recurring"></div>
+            </div>
+            <div class="task-column">
+                <h3>One-time Tasks</h3>
+                <div class="task-list" data-category="one-time"></div>
+            </div>
+            <div class="task-column">
+                <h3>Completed</h3>
+                <div class="task-list" data-category="done"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-tab">
+        <a href="home.html" class="nav-button active">Home</a>
+        <a href="social.html" class="nav-button">Social</a>
+        <a href="profile.html" class="nav-button">Profile</a>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/home.js"></script>
 </body>
+
 </html>
