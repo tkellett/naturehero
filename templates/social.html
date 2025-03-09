@@ -26,29 +26,34 @@
                     </div>
                     
                     <div class="contact-list">
-                        <div class="contact-card">
-                            <div class="contact-info">
-                                <div class="contact-name">{{user_data['Friends']}}</div>
-                                <div class="contact-achievement">{{user_data['Friends']['achievement-name']}}</div>
-                            </div>
-                            <div class="level-badge level-bronze">Level<br>Bronze</div>
-                        </div>
+                        {% for friend in user_data['Friends'] %}
+                         <div class="contact-card">
+                              <div class="contact-info">
+                               <div class="contact-name">{{ friend['name'] }}</div>
+                                <div class="contact-achievement">{{ friend['achievement-name'] }}</div>
+                             </div>
+                          <div class="level-badge">
+                                Level<br>{{ friend['level-badge'] }}
+                           </div>
+                      </div>
+                      {% endfor %}
+
                         
-                        <div class="contact-card">
+                        <!-- <div class="contact-card">
                             <div class="contact-info">
                                 <div class="contact-name">Adam</div>
                                 <div class="contact-achievement">10 full days volunteering over at least 12 months</div>
                             </div>
                             <div class="level-badge level-gold">Level<br>Gold</div>
-                        </div>
+                        </div> -->
                         
-                        <div class="contact-card">
+                        <!-- <div class="contact-card">
                             <div class="contact-info">
                                 <div class="contact-name">Anna</div>
                                 <div class="contact-achievement">6 full days volunteering over at least 6 months</div>
                             </div>
                             <div class="level-badge level-silver">Level<br>Silver</div>
-                        </div>
+                        </div> -->
                     </div>
                 </main>
                 
