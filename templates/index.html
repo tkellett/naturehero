@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FirebaseUI Auth Example</title>
+  <title>GreenHero - Login</title>
   <!-- Firebase and FirebaseUI CSS -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
   <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
   <!-- [START gae_python38_auth_include_firebaseui] -->
@@ -40,14 +41,13 @@
 </head>
 
 <body>
-  <h1>Test123</h1>
-
-  <div hidden=true id="login-container">
-    <button id="googleSignin">Sign In With Google</button>
+  <div class="screen active" id="register">
+    <h1>Login</h1>
     <input type="email" id="emailInput" value="Email">
     <input type="password" id="passwordInput" value="Password">
-    <button id="signupButton">Sign Up</button>
     <button id="loginButton">Log In</button>
+    <button id="signupButton">Sign Up</button>
+    <button id="googleSignin">Sign In With Google</button>
   </div>
   <div hidden=true id="signout-container">
     <button id="sign-out">Sign Out</button>
@@ -55,31 +55,12 @@
   </div>
 
   <div id="login-info" hidden=false>
-    <h2>Login info:</h2>
-    {% if user_data %}
-    <dl>
-      <dt>Name</dt>
-      <dd>{{ user_data['name'] }}</dd>
-      <dt>Email</dt>
-      <dd>{{ user_data['email'] }}</dd>
-      <dt>Last 10 visits</dt>
-      <dd>
-        {% for time in times %}
-        <p>{{ time['timestamp'] }}</p>
-        {% endfor %}
-      </dd>
-      <dd>
-        {% for task in tasks %}
-        <p>task - {{ task['task_name'] }} : {{ task['status'] }}</p>
-        {% endfor %}
-      </dd>
-    </dl>
-    {% elif error_message %}
-    <p>Error: {{ error_message }}</p>
-    {% endif %}
+    
   </div>
 
-
+<script>
+  should_logout("{{logout_path}}")
+</script>
 </body>
 
 </html>

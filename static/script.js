@@ -38,7 +38,17 @@ async function google_login() {
     });
 }
 
+function should_logout(should) {
+  if(should=="yes") {
+    auth.signOut();
+
+    window.location.replace("/")
+  }
+
+}
+
 var onload = function () {
+
   document.getElementById('sign-out').onclick = function () {
     auth.signOut();
   };
@@ -85,7 +95,7 @@ var onload = function () {
       // User is signed in, so display the "sign out" button and login info.
       document.getElementById('signout-container').hidden = false;
       document.getElementById('login-info').hidden = false;
-      document.getElementById('login-container').hidden = true;
+      //document.getElementById('login-container').hidden = true;
       console.log(`Signed in as ${user.displayName} (${user.email})`);
       user.getIdToken().then(function (token) {
         // Add the token to the browser's cookies. The server will then be
@@ -95,6 +105,7 @@ var onload = function () {
         // user information.
         document.cookie = "token=" + token;
       });
+      window.location.replace("home")
     } else {
       // User is signed out.
       // Initialize the FirebaseUI Widget using Firebase.
@@ -104,7 +115,7 @@ var onload = function () {
       // Update the login state indicators.
       document.getElementById('signout-container').hidden = true;
       document.getElementById('login-info').hidden = true;
-      document.getElementById('login-container').hidden = false;
+      //document.getElementById('login-container').hidden = false;
       // Clear the token cookie.
       document.cookie = "token=";
     }

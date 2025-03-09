@@ -3,13 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Social</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/social.css">
+        <title>GreenHero - Social</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='social.css') }}">
     </head>
 <body>
+    <button id="sign-out">Sign Out</button>
+    <script>
+        document.getElementById('sign-out').onclick = function () {
+            window.location.replace("/logout")
+        };
+    </script>
     <div class="screen active">
-        <h1>Social </h1>
         <div class="social-content">
             <div class="container">
                 <header>
@@ -26,17 +31,17 @@
                     </div>
                     
                     <div class="contact-list">
-                        {% for friend in user_data['Friends'] %}
-                         <div class="contact-card">
-                              <div class="contact-info">
-                               <div class="contact-name">{{ friend['name'] }}</div>
-                                <div class="contact-achievement">{{ friend['achievement-name'] }}</div>
-                             </div>
-                          <div class="level-badge">
-                                Level<br>{{ friend['level-badge'] }}
-                           </div>
-                      </div>
-                      {% endfor %}
+                        {% for feeditem in feeditems %}
+                            <div class="contact-card">
+                                <div class="contact-info">
+                                    <div class="contact-name">{{ feeditem['name'] }}</div>
+                                    <div class="contact-achievement">{{ feeditem['achievement-name'] }}</div>
+                                </div>
+                                <div class="level-badge">
+                                    Level<br>{{ feeditem['level-badge'] }}
+                                </div>
+                            </div>
+                        {% endfor %}
 
                         
                         <!-- <div class="contact-card">
@@ -58,9 +63,9 @@
                 </main>
                 
                 <nav class="navigation">
-                    <a href="home.html" class="nav-button">Home</a>
-                    <a href="social.html" class="nav-button active">Social</a>
-                    <a href="profile.html" class="nav-button">Profile</a>
+                    <a href="home" class="nav-button">Home</a>
+                    <a href="social" class="nav-button active">Social</a>
+                    <a href="profile" class="nav-button">Profile</a>
                 </nav>
             </div>
         </div>

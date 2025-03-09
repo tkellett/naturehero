@@ -32,7 +32,11 @@ def create_user(email, name, DoB, tag={}):
     datastore_client.put(entity)
     print(f"User {name} added successfully!")
 
-def create_task(email, task_name):
+    # set starting tasks
+
+    create_task(email, "Romp about the woodlands")
+
+def create_task(email, task_name, status = "daily"):
     user_key = datastore_client.key("User", email)  
 
     task_key = datastore_client.key("User", email, "Task")  
@@ -44,14 +48,13 @@ def create_task(email, task_name):
     task.update({
         "task_name": task_name,
 
-        "status": "To do"
+        "status": status
     })
 
     # Save the entity
     datastore_client.put(task)
     print(f"Task '{task_name}' added for user {email}.")
-
-
+    return task
 
 def create_personal_task(email, task_name):
     user_key = datastore_client.key("User", email)  

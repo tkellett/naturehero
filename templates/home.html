@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>GreenHero - Home</title>
     <!-- Firebase and FirebaseUI CSS -->
     <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -12,6 +12,78 @@
 </head>
 
 <body>
+    <button id="sign-out">Sign Out</button>
+
+    <script>
+        document.getElementById('sign-out').onclick = function () {
+            window.location.replace("/logout")
+        };
+
+        function delete_task(d) {
+            const keyInfo = d.getAttribute('data-key-info');
+            
+            fetch('/delete-task-action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ key_info: keyInfo }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                //alert(result.message);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                //alert('Error: ' + error);
+            });
+        }
+
+        function complete_task(d) {
+            const keyInfo = d.getAttribute('data-key-info');
+            
+            fetch('/complete-task-action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ key_info: keyInfo }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                //alert(result.message);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                //alert('Error: ' + error);
+            });
+        }
+
+        function add_task(d) {      
+            const keyInfo = "";      
+            fetch('/add-task-action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({key_info: keyInfo}),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                window.location.reload();
+            })
+            .catch(error => {                
+                window.location.reload();
+            });
+        }
+    </script>
+
+<button onclick="add_task(this)">Add Task (Test)</button>
     <div class="screen active">
         <!-- Error Message Container -->
         <div id="error-message" class="error-message"></div>
@@ -21,7 +93,7 @@
         <div class="progress-bar">
             <style>
                 .progress {
-                    width : {{ xp_value }}%
+                    width : {{ xp_value  }}%
                 }
             </style>
             <div class="progress" id="progress"></div>
@@ -30,25 +102,41 @@
         <div class="task-sections">
             <div class="task-column">
                 <h3>Daily Tasks</h3>
-                <div class="task-list" data-category="daily">{% for task in daily_tasks %}
+                <div class="task-list" data-category="daily">
+                    {% for task in daily_tasks %}
                     <div class="task-item">
-                       <span class="task-icon">{{task['task-icon']}}</span>
+                        <span class="task-icon">{{task['task-icon']}}</span>
                         <span class="task-name">{{task['task-name']}} </span>
+                        <button onclick="delete_task(this)" data-key-info="{{ task.key_info }}">Delete</button>
+                        <button onclick="complete_task(this)" data-key-info="{{ task.key_info }}">Complete</button>
                     </div>
-                    {% endfor %}</div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="task-column">
                 <h3>Special Tasks</h3>
-                <div class="task-list" data-category="special">{% for task in special_tasks %}
+                <div class="task-list" data-category="special">
+                    {% for task in special_tasks %}
                     <div class="task-item">
-                       <span class="task-icon">{{task['task-icon']}}</span>
+                        <span class="task-icon">{{task['task-icon']}}</span>
                         <span class="task-name">{{task['task-name']}} </span>
+                        <button onclick="delete_task(this)" data-key-info="{{ task.key_info }}">Delete</button>
+                        <button onclick="complete_task(this)" data-key-info="{{ task.key_info }}">Complete</button>
                     </div>
-                    {% endfor %}</div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="task-column">
                 <h3>Completed</h3>
-                <div class="task-list" data-category="done"></div>
+                <div class="task-list" data-category="done">
+                    {% for task in completed_tasks %}
+                    <div class="task-item">
+                        <span class="task-icon">{{task['task-icon']}}</span>
+                        <span class="task-name">{{task['task-name']}} </span>
+                        <button onclick="delete_task(this)" data-key-info="{{ task.key_info }}">Delete</button>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

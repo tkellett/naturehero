@@ -4,13 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Registration</title>
+  <title>GreenHero - Complete Registration</title>
   <!-- Firebase and FirebaseUI CSS -->
   <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
 </head>
 <body>
+    <button id="sign-out">Sign Out</button>
+    <script>
+        document.getElementById('sign-out').onclick = function () {
+            window.location.replace("/logout")
+        };
+    </script>
     <div class="screen active" id="register">
         <h1>Create Account</h1>
         <input type="text" placeholder="Full Name" id="reg-name">
@@ -29,7 +35,7 @@
             };
 
             // Send a POST request to the Flask route
-            fetch('/trigger-action', {
+            fetch('/complete-registration-action', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>GreenHero - Profile</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
+    <button id="sign-out">Sign Out</button>
+    <script>
+        document.getElementById('sign-out').onclick = function () {
+            window.location.replace("/logout")
+        };
+    </script>
     <div class="screen active">
         <h1>User Profile</h1>
         <div class="profile-content">
