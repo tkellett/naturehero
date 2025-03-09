@@ -39,11 +39,6 @@ async function google_login() {
 }
 
 var onload = function () {
-  if (window.location.hostname === "localhost") {
-    firebase.firestore().useEmulator("localhost", 8080); // Firestore emulator
-    firebase.auth().useEmulator("http://localhost:9099"); // Authentication emulator
-    firebase.functions().useEmulator("localhost", 5001); // Functions emulator
-  }
   document.getElementById('sign-out').onclick = function () {
     auth.signOut();
   };

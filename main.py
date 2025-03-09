@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, jsonify
 from google.auth.transport import requests
 from google.cloud import datastore
 import google.oauth2.id_token
@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 from database_management import *
 
+firebase_request_adapter = requests.Request()
 datastore_client = datastore.Client()
 
 def store_time(email, dt):
@@ -25,7 +26,62 @@ def fetch_times(email, limit):
 
     return times
 
-firebase_request_adapter = requests.Request()
+@app.route('/submit-registration', methods=['POST'])
+def submit_registration():
+    # Get user input from the form
+    name = request.form.get('name')
+    email = request.form.get('email')
+    age = request.form.get('age')
+
+    # Store the data in Firestore
+    user_data = {
+        'name': name,
+        'email': email,
+        'age': int(age)
+    }
+
+    # Add a new document to the "users" collection
+    db.collection('users').add(user_data)
+
+    return redirect('/')
+
+@app.route('/trigger-action', methods=['POST'])
+def trigger_action():
+    # Get data from the request (if any)
+    data = request.json  # For JSON data
+    name = data.get('name')
+    age = data.get('age')
+
+    # Perform some action (e.g., process data, interact with a database)
+    print(f"Received data: Name = {name}, Age = {age}")
+
+    # Return a response (optional)
+    return jsonify({"status": "success", "message": "Action triggered successfully!"})
+
+@app.route("/home")
+def home():
+
+    error_message = None
+    id_token = request.cookies.get("token")
+    if id_token:
+            try:
+                claims = google.oauth2.id_token.verify_firebase_token(
+                    id_token, firebase_request_adapter
+                )
+                # CHECK IF USER IS REGISTERED
+                
+                return render_template(
+                    "home.html"
+                )
+
+            except ValueError as exc:
+                # This will be raised if the token is expired or any other
+                # verification checks fail.
+                error_message = str(exc)
+                return redirect("/")
+    
+    return redirect("/")
+
 @app.route("/")
 def root():
     # Verify Firebase auth.
@@ -33,7 +89,7 @@ def root():
     error_message = None
     claims = None
     times = None
-    #tasks = None
+    tasks = None
 
     if id_token:
         try:

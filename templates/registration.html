@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirebaseUI Auth Example</title>
+  <!-- Firebase and FirebaseUI CSS -->
+  <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Trigger Flask Action</h1>
+    <button id="trigger-button">Trigger Action</button>
+
+    <script>
+        document.getElementById('trigger-button').addEventListener('click', () => {
+            // Data to send to the Flask route
+            const data = {
+                name: "John Doe",
+                age: 30
+            };
+
+            // Send a POST request to the Flask route
+            fetch('/trigger-action', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                alert(result.message);  // Show the response message
+                window.location.replace("home")
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred!');
+            });
+        });
+    </script>
+</body>
+</html>
