@@ -1,0 +1,147 @@
+/* css/social.css */
+/* Social Page Specific Styles */
+
+/* Main Container */
+.social-content .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.social-content header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.social-content h1 {
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+/* Search Section */
+.search-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #4CAF50;
+    border-radius: 20px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Photo Link */
+.profile-photo {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.profile-photo a {
+    text-decoration: none;
+    color: #4CAF50;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Contact List */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.contact-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border: 1.5px solid #4CAF50;
+    border-radius: 25px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.contact-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+/* Level Badges */
+.level-badge {
+    padding: 6px 12px;
+    border: 1.5px solid;
+    border-radius: 15px;
+    font-size: 12px;
+    color: #2c3e50;
+    text-align: center;
+    font-weight: 500;
+}
+
+.level-bronze {
+    background-color: #f9f3e5;
+    border-color: #cd7f32;
+}
+
+.level-silver {
+    background-color: #f0f0f0;
+    border-color: #c0c0c0;
+}
+
+.level-gold {
+    background-color: #fff9e5;
+    border-color: #ffd700;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .contact-list {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+/* Bottom Navigation Matching Home Screen */
+.navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    padding: 12px 0;
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.navigation .nav-button {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    margin: 0 5px;
+    border-radius: 8px;
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.navigation .nav-button.active {
+    background-color: #e0f7fa;
+    color: #00796b;
+}
+
+.navigation .nav-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Content Padding Adjustment */
+.screen.active {
+    padding-bottom: 70px;
+}
