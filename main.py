@@ -4,30 +4,27 @@ import json
 from google.auth.transport import requests
 from google.cloud import datastore
 import google.oauth2.id_token
-import uuid
 app = Flask(__name__)
 app.secret_key = 'EXCELLENT_SECRET_KEY'
 
 from database_management import *
+from achievements import *
+from minor_tasks import *
 
 firebase_request_adapter = requests.Request()
 datastore_client = datastore.Client()
 
-def store_time(email, dt):
-    entity = datastore.Entity(key=datastore_client.key("User", email, "visit"))
-    entity.update({"timestamp": dt})
+def get_lvl_xp(raw_xp):
+    xp = raw_xp
+    next_level_xp = 100
+    level = 1
+    while xp > next_level_xp:
+        level += 1
+        xp -= next_level_xp
+        next_level_xp = int(next_level_xp * 1.5)
 
-    datastore_client.put(entity)
-
-
-def fetch_times(email, limit):
-    ancestor = datastore_client.key("User", email)
-    query = datastore_client.query(kind="visit", ancestor=ancestor)
-    query.order = ["-timestamp"]
-
-    times = query.fetch(limit=limit)
-
-    return times
+    return (level, xp / float(next_level_xp))
+    
 
 @app.route('/add-task-action', methods=['POST'])
 def add_task_test_action():
@@ -37,9 +34,34 @@ def add_task_test_action():
                 claims = google.oauth2.id_token.verify_firebase_token(
                     id_token, firebase_request_adapter
                 )
-                create_task(claims["email"], "test task 123" + str(datetime.datetime.now(tz=datetime.timezone.utc)))
+                #create_task(claims["email"], "test task 123" + str(datetime.datetime.now(tz=datetime.timezone.utc)))
             except:
                 pass
+
+def add_streak_xp():
+    id_token = request.cookies.get("token")
+    if id_token:
+            try:
+                claims = google.oauth2.id_token.verify_firebase_token(
+                    id_token, firebase_request_adapter
+                )
+                key = datastore_client.key("User", claims['email'])  # "User" is the kind, email is the unique key
+
+                # Create a new entity
+                entity = datastore_client.get(key)
+                streak = 0
+                if 'streak' in entity:
+                    streak = entity['streak']
+                xp = 0
+                if 'xp' in entity:
+                    xp = entity['xp']
+                entity['streak'] = streak+1
+                entity['xp']= xp + 50
+
+                datastore_client.put(entity)
+            except:
+                pass
+    
 
 @app.route('/complete-task-action', methods=['POST'])
 def complete_task_action():
@@ -54,8 +76,6 @@ def complete_task_action():
         parent_key = client.key(key_info['parent_kind'], key_info['parent_name'])
         task_key = client.key(key_info['kind'], key_info['id'], parent=parent_key)
 
-        vals = client.get(task_key)
-
         # Get the entity
         task_entity = client.get(task_key)
         
@@ -64,9 +84,33 @@ def complete_task_action():
         
         # Update the entity
         task_entity['status'] = "Completed"
+        task_entity['timestamp'] = datetime.datetime.now()
 
-        # Delete the entity
-        client.put(task_entity)
+        id_token = request.cookies.get("token")
+        if id_token:
+                try:
+                    claims = google.oauth2.id_token.verify_firebase_token(
+                        id_token, firebase_request_adapter
+                    )
+
+                    task_key = datastore_client.key("User", claims['email'], "finished_task")  
+                    fin_task = datastore.Entity(key=task_key)
+
+                    # Set properties for the Task
+                    fin_task.update({
+                        "task_name": task_entity['task_name'],
+                        "timestamp": datetime.datetime.now(),
+                        "status": "Completed"
+                    })
+
+                    # Save the entity
+                    datastore_client.put(fin_task)
+                except:
+                    pass
+
+        # Overwrite the entity
+        client.delete(task_entity)
+        add_streak_xp()
         
         return jsonify({"message": "Task deleted successfully"})
     except Exception as e:
@@ -153,19 +197,6 @@ def social():
     
     return redirect("/")
 
-def make_task_entry(entity):
-    key_info = {
-        'parent_kind': entity.key.parent.kind,
-        'parent_name': entity.key.parent.name,  # Using name since your User key uses name
-        'kind': entity.key.kind,
-        'id': entity.key.id
-    }
-    task_entry = {
-        "task-icon":"A",
-        "task-name":entity['task_name'],
-        "key_info": json.dumps(key_info)
-    }
-    return task_entry
 
 @app.route("/home")
 def home():
@@ -177,6 +208,7 @@ def home():
                     id_token, firebase_request_adapter
                 )
                 task_query = fetch_tasks(claims['email'], 50)
+                finished_task_query = fetch_finished_tasks(claims['email'], 7)
 
                 completed_tasks = []
                 daily_tasks = []
@@ -185,20 +217,30 @@ def home():
                     task_entry = make_task_entry(task)
 
                     if task['status'] == "Completed":
-                        completed_tasks.append(task_entry)
+                        pass #completed_tasks.append(task_entry)
                     elif task['status'] == "Special":
                         special_tasks.append(task_entry)
                     else:
                         daily_tasks.append(task_entry)
+                for task in finished_task_query:
+                    task_entry = make_task_entry(task)
+                    completed_tasks.append(task_entry)
                 
-                while len(daily_tasks) < 7:
-                    task = create_task(claims['email'], "Test Task")
+                while len(daily_tasks) < 4:
+                    task = create_task(claims['email'], random_task()['task-name'])
                     daily_tasks.append(make_task_entry(task))
             
                 # CHECK IF USER IS REGISTERED
                 if is_user_created(claims['email']):
+                    key = datastore_client.key("User", claims['email'])  # "User" is the kind, email is the unique key
+
+                    # Create a new entity
+                    entity = datastore_client.get(key)
+                    xp = entity['xp'] if 'xp' in entity else 0
+                    level, progress = get_lvl_xp(xp)
+                    
                     return render_template(
-                        "home.html", xp_value = 75, level = 5, daily_tasks=daily_tasks,special_tasks=special_tasks,completed_tasks=completed_tasks
+                        "home.html", xp_value = progress*100.0, level = level, daily_tasks=daily_tasks,special_tasks=special_tasks,completed_tasks=completed_tasks
                     )
                 else:
                     return render_template(
@@ -223,20 +265,24 @@ def profile():
                     id_token, firebase_request_adapter
                 )
 
-                achievements = []
-                achievements.append({"achievement-name":"dummy achievement", "achievement-icon":"🏆"})
+                fin_task_query = fetch_finished_tasks(claims['email'], 999)
+
+                achievements, completion_percent = get_achievements(fin_task_query)
+
+                #achievements = []
+                #achievements.append({"achievement-name":"dummy achievement", "achievement-icon":"🏆"})
 
                 # CHECK IF USER IS REGISTERED
                 if is_user_created(claims['email']):
                     key = datastore_client.key("User", claims['email'])  # "User" is the kind, email is the unique key
                     # Create a new entity
                     entity = datastore_client.get(key)
-
+                    
                     user_data={
                         "name":entity['name'],
                         "email":claims['email'],
-                        "streak":"dummy 5",
-                        "questions_percent":"20",
+                        "streak":entity['streak'] if 'streak' in entity else 0,
+                        "questions_percent":str(completion_percent),
                         "friends_number":"6"
                     }
                     return render_template(

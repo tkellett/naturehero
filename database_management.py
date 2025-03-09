@@ -1,6 +1,8 @@
 from google.auth.transport import requests
 from google.cloud import datastore
+import json
 import google.oauth2.id_token
+import datetime
 
 datastore_client = datastore.Client()
 
@@ -24,7 +26,9 @@ def create_user(email, name, DoB, tag={}):
     entity.update({
         "name": name,
         "dateOfBirth": DoB,
-        "XP":0
+        "xp":0,
+        "streak":0,
+        "friends":0,
 
     })
 
@@ -36,10 +40,24 @@ def create_user(email, name, DoB, tag={}):
 
     create_task(email, "Romp about the woodlands")
 
+def make_task_entry(entity):
+    key_info = {
+        'parent_kind': entity.key.parent.kind,
+        'parent_name': entity.key.parent.name,  # Using name since your User key uses name
+        'kind': entity.key.kind,
+        'id': entity.key.id
+    }
+    task_entry = {
+        "task-icon":"A",
+        "task-name":entity['task_name'],
+        "key_info": json.dumps(key_info)
+    }
+    return task_entry
+
 def create_task(email, task_name, status = "daily"):
     user_key = datastore_client.key("User", email)  
 
-    task_key = datastore_client.key("User", email, "Task")  
+    task_key = datastore_client.key("User", email, "task")  
 
     # Create the Task entity
     task = datastore.Entity(key=task_key)
@@ -47,7 +65,7 @@ def create_task(email, task_name, status = "daily"):
     # Set properties for the Task
     task.update({
         "task_name": task_name,
-
+        "timestamp": datetime.datetime.now(),
         "status": status
     })
 
@@ -58,7 +76,7 @@ def create_task(email, task_name, status = "daily"):
 
 def create_personal_task(email, task_name):
     user_key = datastore_client.key("User", email)  
-    personal_task_key = datastore_client.key("User", email, "Task")  
+    personal_task_key = datastore_client.key("User", email, "task")  
 
     # Create the Task entity
     personal_task = datastore.Entity(key=personal_task_key)
@@ -77,12 +95,27 @@ def create_personal_task(email, task_name):
 
 def fetch_tasks(email, limit):
     ancestor = datastore_client.key("User", email)
-    query = datastore_client.query(kind="Task", ancestor=ancestor)
+    query = datastore_client.query(kind="task", ancestor=ancestor)
     #query.order = ["-task_name"]
+
+    query.order = ["-timestamp"]
 
     tasks = query.fetch(limit=limit)
 
     return tasks
+
+def fetch_finished_tasks(email, limit):
+    ancestor = datastore_client.key("User", email)
+    query = datastore_client.query(kind="finished_task", ancestor=ancestor)
+    #query.order = ["-task_name"]
+
+    query.order = ["-timestamp"]
+
+    tasks = query.fetch(limit=limit)
+
+    return tasks
+
+
 
 
 

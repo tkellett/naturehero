@@ -20,9 +20,22 @@ indexes:
   - name: timestamp
     direction: desc
 
+- kind: finished_task
+  ancestor: yes
+  properties:
+  - name: timestamp
+    direction: desc
+
+- kind: task
+  ancestor: yes
+  properties:
+  - name: timestamp
+    direction: desc
+
 - kind: task
   ancestor: yes
   properties:
   - name: task_name
+  - name: timestamp
     direction: desc
   - name: status
