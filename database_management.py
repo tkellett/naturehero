@@ -4,6 +4,13 @@ import google.oauth2.id_token
 
 datastore_client = datastore.Client()
 
+def is_user_created(email):
+    key = datastore_client.key("User", email)  # "User" is the kind, email is the unique key
+    if datastore_client.get(key) is None:
+        return False
+    else:
+        return True
+
 def create_user(email, name, DoB, tag={}):
     key = datastore_client.key("User", email)  # "User" is the kind, email is the unique key
 
