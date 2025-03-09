@@ -1,0 +1,68 @@
+/* css/registry.css */
+/* Registration Page Specific Styles */
+
+#register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 15px;
+    padding: 20px;
+}
+
+#register h1 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+#register input {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#register button {
+    width: 200px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+#register button:hover {
+    background-color: #45a049;
+}
+
+#register p {
+    margin-top: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+#register a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#register a:hover {
+    text-decoration: underline;
+}
+
+/* Date input customization */
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    color: #666;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+}

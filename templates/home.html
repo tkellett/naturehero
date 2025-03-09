@@ -16,38 +16,35 @@
         <!-- Error Message Container -->
         <div id="error-message" class="error-message"></div>
 
-        <div class="level-display">Level: <span id="level">1</span></div>
+        <div class="level-display">Level: <span id="level">{{ level }}</span></div>
         <img src="https://via.placeholder.com/200" class="profile-pic" id="profile-pic">
         <div class="progress-bar">
+            <style>
+                .progress {
+                    width : {{ xp_value }}%
+                }
+            </style>
             <div class="progress" id="progress"></div>
-        </div>
-
-        <div class="add-task">
-            <div class="task-input-group">
-                <input type="text" id="new-task" placeholder="Task title*" required>
-                <select id="task-type">
-                    <option value="recurring">Recurring</option>
-                    <option value="one-time">One-time</option>
-                </select>
-            </div>
-
-            <div class="task-meta-inputs">
-                <input type="date" id="start-date" required min="">
-                <input type="date" id="end-date" required min="">
-                <input type="text" id="task-tags" class="task-tags-input" placeholder="Tags (comma separated, max 5)">
-            </div>
-
-            <button type="button" onclick="addNewTask()">Add Task</button>
         </div>
 
         <div class="task-sections">
             <div class="task-column">
-                <h3>Recurring Tasks</h3>
-                <div class="task-list" data-category="recurring"></div>
+                <h3>Daily Tasks</h3>
+                <div class="task-list" data-category="daily">{% for task in daily_tasks %}
+                    <div class="task-item">
+                       <span class="task-icon">{{task['task-icon']}}</span>
+                        <span class="task-name">{{task['task-name']}} </span>
+                    </div>
+                    {% endfor %}</div>
             </div>
             <div class="task-column">
-                <h3>One-time Tasks</h3>
-                <div class="task-list" data-category="one-time"></div>
+                <h3>Special Tasks</h3>
+                <div class="task-list" data-category="special">{% for task in special_tasks %}
+                    <div class="task-item">
+                       <span class="task-icon">{{task['task-icon']}}</span>
+                        <span class="task-name">{{task['task-name']}} </span>
+                    </div>
+                    {% endfor %}</div>
             </div>
             <div class="task-column">
                 <h3>Completed</h3>
@@ -57,9 +54,9 @@
     </div>
 
     <div class="nav-tab">
-        <a href="home.html" class="nav-button active">Home</a>
-        <a href="social.html" class="nav-button">Social</a>
-        <a href="profile.html" class="nav-button">Profile</a>
+        <a href="home" class="nav-button active">Home</a>
+        <a href="social" class="nav-button">Social</a>
+        <a href="profile" class="nav-button">Profile</a>
     </div>
 
     <script src="js/navigation.js"></script>
