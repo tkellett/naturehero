@@ -17,34 +17,15 @@
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
-        
-        <div class="add-task">
-            <div class="task-input-group">
-                <input type="text" id="new-task" placeholder="Task title*" required>
-                <select id="task-type">
-                    <option value="recurring">Recurring</option>
-                    <option value="one-time">One-time</option>
-                </select>
-            </div>
-            
-            <div class="task-meta-inputs">
-                <input type="date" id="start-date" required min="">
-                <input type="date" id="end-date" required min="">
-                <input type="text" id="task-tags" class="task-tags-input" 
-                       placeholder="Tags (comma separated, max 5)">
-            </div>
-            
-            <button type="button" onclick="addNewTask()">Add Task</button>
-        </div>
 
         <div class="task-sections">
             <div class="task-column">
-                <h3>Recurring Tasks</h3>
-                <div class="task-list" data-category="recurring"></div>
+                <h3>Daily Tasks</h3>
+                <div class="task-list" data-category="daily"></div>
             </div>
             <div class="task-column">
-                <h3>One-time Tasks</h3>
-                <div class="task-list" data-category="one-time"></div>
+                <h3>Special Tasks</h3>
+                <div class="task-list" data-category="special"></div>
             </div>
             <div class="task-column">
                 <h3>Completed</h3>
