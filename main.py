@@ -31,17 +31,19 @@ def submit_registration():
     # Get user input from the form
     name = request.form.get('name')
     email = request.form.get('email')
-    age = request.form.get('age')
+    dob = request.form.get('DoB')
 
     # Store the data in Firestore
     user_data = {
         'name': name,
         'email': email,
-        'age': int(age)
+        'date-of-birth': dob
     }
 
     # Add a new document to the "users" collection
-    db.collection('users').add(user_data)
+    #db.collection('users').add(user_data)
+
+    create_user(email, name, dob, {})
 
     return redirect('/')
 
@@ -55,12 +57,22 @@ def trigger_action():
     # Perform some action (e.g., process data, interact with a database)
     print(f"Received data: Name = {name}, Age = {age}")
 
+    id_token = request.cookies.get("token")
+    if id_token:
+        try:
+            claims = google.oauth2.id_token.verify_firebase_token(
+                id_token, firebase_request_adapter
+            )
+            create_user(claims['email'], name, "1997-03-25", {})
+            return jsonify({"status": "success", "message": "Action triggered successfully!"})
+        except:
+            pass
+
     # Return a response (optional)
-    return jsonify({"status": "success", "message": "Action triggered successfully!"})
+    return jsonify({"failure": "success", "message": "Action triggered unsuccessfully!"})
 
 @app.route("/home")
 def home():
-
     error_message = None
     id_token = request.cookies.get("token")
     if id_token:
@@ -69,10 +81,52 @@ def home():
                     id_token, firebase_request_adapter
                 )
                 # CHECK IF USER IS REGISTERED
-                
-                return render_template(
-                    "home.html"
+                if is_user_created(claims['email']):
+                    return render_template(
+                        "home.html"
+                    )
+                else:
+                    return render_template(
+                        "registration.html"
+                    )
+
+            except ValueError as exc:
+                # This will be raised if the token is expired or any other
+                # verification checks fail.
+                error_message = str(exc)
+                return redirect("/")
+    
+    return redirect("/")
+
+@app.route("/profile")
+def profile():
+    error_message = None
+    id_token = request.cookies.get("token")
+    if id_token:
+            try:
+                claims = google.oauth2.id_token.verify_firebase_token(
+                    id_token, firebase_request_adapter
                 )
+
+                achievements = []
+                achievements.append({"achievement-name":"dummy achievement", "achievement-icon":"🏆"})
+                user_data={
+                    "name":"dummy name",
+                    "email":claims['email'],
+                    "streak":"dummy 5",
+                    "questions_percent":"20",
+                    "friends_number":"6"
+                }
+
+                # CHECK IF USER IS REGISTERED
+                if is_user_created(claims['email']):
+                    return render_template(
+                        "profile.html", achievements=achievements, user_data=user_data
+                    )
+                else:
+                    return render_template(
+                        "registration.html"
+                    )
 
             except ValueError as exc:
                 # This will be raised if the token is expired or any other

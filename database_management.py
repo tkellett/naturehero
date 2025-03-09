@@ -6,6 +6,9 @@ datastore_client = datastore.Client()
 
 def is_user_created(email):
     key = datastore_client.key("User", email)  # "User" is the kind, email is the unique key
+
+    #datastore_client.delete(key)
+
     if datastore_client.get(key) is None:
         return False
     else:
