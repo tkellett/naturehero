@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
     <div class="screen active">
@@ -44,14 +45,13 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="navigation">
-                <a href="#" class="nav-link">Profile</a>
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Social</a>
-            </div>
         </div>
     </div>
-
+    <div class="nav-tab">
+        <a href="home" class="nav-button">Home</a>
+        <a href="social" class="nav-button">Social</a>
+        <a href="profile" class="nav-button  active">Profile</a>
+    </div>
     <script>
         // JavaScript to handle photo upload and preview
         const photoUpload = document.getElementById('profile-photo-upload');

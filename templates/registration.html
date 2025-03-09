@@ -4,21 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FirebaseUI Auth Example</title>
+  <title>Complete Registration</title>
   <!-- Firebase and FirebaseUI CSS -->
   <!--<script src="{{ url_for('static', filename='script.js') }}"></script>-->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='registry.css') }}">
 </head>
 <body>
-  <h1>Trigger Flask Action</h1>
-    <button id="trigger-button">Trigger Action</button>
-
+    <div class="screen active" id="register">
+        <h1>Create Account</h1>
+        <input type="text" placeholder="Full Name" id="reg-name">
+        <input type="date" placeholder="Date of Birth" id="reg-dob">
+        <button id="register-button">Complete Registration</button>
+        <!--<p>Already have an account? <a href="index.html">Login here</a></p>-->
+    </div>
     <script>
-        document.getElementById('trigger-button').addEventListener('click', () => {
+        document.getElementById('register-button').addEventListener('click', () => {
             // Data to send to the Flask route
+            const name = document.getElementById("reg-name").value;
+            const dob = document.getElementById("reg-dob").value;
             const data = {
-                name: "John Doe",
-                age: 30
+                name: name,
+                dob: dob
             };
 
             // Send a POST request to the Flask route

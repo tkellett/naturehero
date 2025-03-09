@@ -52,10 +52,7 @@ def trigger_action():
     # Get data from the request (if any)
     data = request.json  # For JSON data
     name = data.get('name')
-    age = data.get('age')
-
-    # Perform some action (e.g., process data, interact with a database)
-    print(f"Received data: Name = {name}, Age = {age}")
+    dob = data.get('dob')
 
     id_token = request.cookies.get("token")
     if id_token:
@@ -63,7 +60,7 @@ def trigger_action():
             claims = google.oauth2.id_token.verify_firebase_token(
                 id_token, firebase_request_adapter
             )
-            create_user(claims['email'], name, "1997-03-25", {})
+            create_user(claims['email'], name, dob, {})
             return jsonify({"status": "success", "message": "Action triggered successfully!"})
         except:
             pass
@@ -80,10 +77,20 @@ def home():
                 claims = google.oauth2.id_token.verify_firebase_token(
                     id_token, firebase_request_adapter
                 )
+                daily_tasks = []
+                special_tasks = []
+                daily_tasks.append({
+                    "task-icon":"A",
+                    "task-name":"Pick up Trash"
+                })
+                special_tasks.append({
+                    "task-icon":"A",
+                    "task-name":"Weekend Volunteering"
+                })
                 # CHECK IF USER IS REGISTERED
                 if is_user_created(claims['email']):
                     return render_template(
-                        "home.html"
+                        "home.html", xp_value = 75, level = 5, daily_tasks=daily_tasks,special_tasks=special_tasks
                     )
                 else:
                     return render_template(
