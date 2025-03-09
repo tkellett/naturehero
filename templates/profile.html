@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="screen active">
+        <h1>User Profile</h1>
+        <div class="profile-content">
+            <div class="profile-header">
+                <!-- Profile Photo Upload -->
+                <label for="profile-photo-upload" class="profile-photo-container">
+                    <img src="placeholder.jpg" alt="Profile Photo" class="profile-photo" id="profile-photo-preview">
+                    <span class="upload-text">Upload Photo</span>
+                </label>
+                <input type="file" id="profile-photo-upload" accept="image/*" style="display: none;">
+                <div class="name">{{user_data['name']}}</div>
+                <div class="username">{{user_data['email']}}</div>
+            </div>
+            <div class="statistics">
+                <div class="stat-item">
+                    <span class="stat-label">Sneak:</span>
+                    <span class="stat-value">len(list(datastore_client.query(kind="timestamp")))</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Friends:</span>
+                    <span class="stat-value">{{user_data['friends_number']}}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">{{user_data['questions_percent']}}% Done</span>
+                </div>
+            </div>
+            <div class="achievements">
+                <h2>Achievements</h2>
+                <div class="achievement-list">
+                  <!--   <div class="achievement-item">
+                        <span class="achievement-icon">🏆</span>
+                        <span class="achievement-name">First Task Completed</span>
+                    </div>-->
+                    <div class="achievement-item">
+                      <!--    <span class="achievement-icon">🎖️</span>-->
+                       <span class="achievement-icon">{{achievement['achievement-icon']}}</span>
+                        <span class="achievement-name">{{achievement['achievement-name']}} </span>
+                    </div>
+                    <div class="achievement-item">
+                        <span class="achievement-icon">🌟</span>
+                        <span class="achievement-name">Level {{user_data['level']}} Reached</span>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation">
+                <a href="#" class="nav-link">Profile</a>
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Social</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle photo upload and preview
+        const photoUpload = document.getElementById('profile-photo-upload');
+        const photoPreview = document.getElementById('profile-photo-preview');
+
+        photoUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
